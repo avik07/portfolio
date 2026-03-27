@@ -241,45 +241,83 @@
     }
     .s-sub { color: var(--muted); font-size: 16px; max-width: 560px; line-height: 1.75; margin-bottom: 56px; }
 
-    /* ── TIMELINE ── */
-    .timeline { position: relative; }
-    .timeline::before {
-      content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 2px;
-      background: linear-gradient(to bottom, var(--blue), var(--purple), transparent);
+    /* ── EXPERIENCE TABS ── */
+    .exp-layout {
+      display: grid; grid-template-columns: 270px 1fr;
+      border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
+      min-height: 420px;
     }
 
-    .tl-item {
-      position: relative; padding-left: 76px; margin-bottom: 56px;
-      opacity: 0; transform: translateX(-28px); transition: all .6s ease;
-    }
-    .tl-item.vis { opacity: 1; transform: translateX(0); }
-
-    .tl-dot {
-      position: absolute; left: 12px; top: 10px;
-      width: 26px; height: 26px; border-radius: 50%;
-      background: var(--grad); border: 3px solid var(--bg); z-index: 1;
-      box-shadow: 0 0 18px rgba(0,212,255,.4);
+    .tab-list {
+      border-right: 1px solid var(--border);
+      background: rgba(255,255,255,.02);
+      display: flex; flex-direction: column;
     }
 
-    .tl-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 20px; padding: 30px 34px;
-      transition: transform .35s, border-color .35s, box-shadow .35s;
+    .tab-btn {
+      display: block; width: 100%; background: none; border: none;
+      padding: 22px 24px; text-align: left; cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: background .25s, border-color .25s;
+      position: relative;
     }
-    .tl-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(0,212,255,.18);
-      box-shadow: 0 24px 60px rgba(0,0,0,.35);
-      background: rgba(255,255,255,.055);
+    .tab-btn + .tab-btn { border-top: 1px solid var(--border); }
+    .tab-btn:hover:not(.active) { background: rgba(255,255,255,.04); }
+    .tab-btn.active {
+      background: rgba(0,212,255,.07);
+      border-left-color: var(--blue);
+    }
+    .tab-btn.active::after {
+      content: ''; position: absolute; right: -1px; top: 50%;
+      transform: translateY(-50%);
+      width: 0; height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-right: 8px solid var(--bg2, #0c0c1a);
     }
 
-    .role-row {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      flex-wrap: wrap; gap: 10px; margin-bottom: 14px;
+    .tab-role {
+      display: block; font-size: 14px; font-weight: 600;
+      color: var(--muted); margin-bottom: 5px; line-height: 1.3;
+      transition: color .25s;
     }
-    .role-name {
+    .tab-btn.active .tab-role { color: #fff; }
+
+    .tab-co {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--muted); margin-bottom: 5px;
+      opacity: .75;
+    }
+    .tab-co-dot { width: 5px; height: 5px; background: var(--purple); border-radius: 50%; flex-shrink: 0; }
+
+    .tab-period {
+      display: block; font-size: 11.5px;
+      color: var(--blue); font-weight: 500; opacity: .8;
+    }
+    .tab-now {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.25);
+      color: var(--green); padding: 2px 9px; border-radius: 50px;
+      font-size: 11px; font-weight: 600; margin-top: 6px;
+    }
+    .tab-now::before { content: ''; width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+
+    .tab-panels { padding: 34px 36px; overflow: auto; }
+
+    .tab-panel { display: none; }
+    .tab-panel.active {
+      display: block;
+      animation: panelFade .35s ease;
+    }
+    @keyframes panelFade {
+      from { opacity: 0; transform: translateX(14px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .panel-header { margin-bottom: 28px; }
+    .panel-title {
       font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700;
-      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      margin-bottom: 6px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
     }
     .now-badge {
       display: inline-flex; align-items: center; gap: 5px;
@@ -288,18 +326,16 @@
       font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif;
     }
     .now-badge::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
-
-    .period-badge {
+    .panel-meta {
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    }
+    .panel-co { color: var(--muted); font-size: 14px; display: flex; align-items: center; gap: 6px; }
+    .panel-co-dot { width: 5px; height: 5px; background: var(--purple); border-radius: 50%; }
+    .panel-period {
       background: rgba(0,212,255,.09); border: 1px solid rgba(0,212,255,.2);
-      color: var(--blue); padding: 5px 16px; border-radius: 50px;
-      font-size: 13px; font-weight: 500; white-space: nowrap;
+      color: var(--blue); padding: 4px 14px; border-radius: 50px;
+      font-size: 12px; font-weight: 500;
     }
-
-    .company-line {
-      color: var(--muted); font-size: 14px; margin-bottom: 28px;
-      display: flex; align-items: center; gap: 7px;
-    }
-    .cdot { width: 5px; height: 5px; background: var(--purple); border-radius: 50%; }
 
     .proj-grid { display: grid; gap: 18px; }
     .proj-card {
@@ -517,16 +553,23 @@
       .stats-wrap { padding: 64px 24px; }
     }
 
+    @media (max-width: 860px) {
+      .exp-layout { grid-template-columns: 1fr; }
+      .tab-list { flex-direction: row; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--border); }
+      .tab-btn { padding: 14px 18px; border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; flex-shrink: 0; }
+      .tab-btn.active { border-left-color: transparent; border-bottom-color: var(--blue); }
+      .tab-btn.active::after { display: none; }
+      .tab-btn + .tab-btn { border-top: none; border-left: 1px solid var(--border); }
+      .tab-co { display: none; }
+      .tab-panels { padding: 24px; }
+    }
+
     @media (max-width: 600px) {
       .stats-grid { grid-template-columns: 1fr 1fr; }
       .skills-grid { grid-template-columns: 1fr; }
-      .tl-item { padding-left: 56px; }
-      .timeline::before { left: 18px; }
-      .tl-dot { left: 6px; }
-      .tl-card { padding: 20px; }
       .edu-card { flex-direction: column; text-align: center; }
       .edu-pills { justify-content: center; }
-      .role-row { flex-direction: column; }
+      .panel-title { font-size: 18px; }
     }
   </style>
 </head>
@@ -615,22 +658,48 @@
   <h2 class="s-title">Work <em>Experience</em></h2>
   <p class="s-sub">Building AI-powered ad-tech and analytics products at Sprinklr — from analyst to associate product manager.</p>
 
-  <div class="timeline">
+  <div class="exp-layout">
 
-    <!-- ── Role 1 ── -->
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-card">
-        <div class="role-row">
-          <div class="role-name">
+    <!-- ── Tab buttons ── -->
+    <div class="tab-list">
+
+      <button class="tab-btn active" onclick="switchTab(0, this)">
+        <span class="tab-role">Associate Product Manager</span>
+        <div class="tab-co"><span class="tab-co-dot"></span>Sprinklr · Gurugram</div>
+        <span class="tab-period">June 2025 – Present</span>
+        <span class="tab-now">Current</span>
+      </button>
+
+      <button class="tab-btn" onclick="switchTab(1, this)">
+        <span class="tab-role">Senior Product Analyst</span>
+        <div class="tab-co"><span class="tab-co-dot"></span>Sprinklr · Gurugram</div>
+        <span class="tab-period">Mar 2024 – June 2025</span>
+      </button>
+
+      <button class="tab-btn" onclick="switchTab(2, this)">
+        <span class="tab-role">Product Analyst</span>
+        <div class="tab-co"><span class="tab-co-dot"></span>Sprinklr · Gurugram</div>
+        <span class="tab-period">Feb 2022 – Mar 2024</span>
+      </button>
+
+    </div>
+
+    <!-- ── Tab panels ── -->
+    <div class="tab-panels">
+
+      <!-- Panel 0 -->
+      <div class="tab-panel active" id="tab-0">
+        <div class="panel-header">
+          <div class="panel-title">
             Associate Product Manager
             <span class="now-badge">Current</span>
           </div>
-          <span class="period-badge">June 2025 – Present</span>
+          <div class="panel-meta">
+            <span class="panel-co"><span class="panel-co-dot"></span>Sprinklr · Gurugram</span>
+            <span class="panel-period">June 2025 – Present</span>
+          </div>
         </div>
-        <div class="company-line"><span class="cdot"></span> Sprinklr · Gurugram</div>
         <div class="proj-grid">
-
           <div class="proj-card">
             <div class="proj-title">🤖 AI-Powered Media Plan to Campaign Generation</div>
             <ul class="bullets">
@@ -638,7 +707,6 @@
               <li>Coordinating cross-functional execution with ML, backend, and design teams; projected to eliminate manual campaign setup for <strong>80%+ of enterprise ad creation workflows</strong></li>
             </ul>
           </div>
-
           <div class="proj-card">
             <div class="proj-title">🛡️ AI & Governance Automation</div>
             <ul class="bullets">
@@ -649,31 +717,27 @@
               <li>Spearheaded GTM execution — delivered <strong>20+ customer demos</strong>, scaled beta to <strong>50+ enterprise accounts</strong>, and built enablement collateral driving product adoption</li>
             </ul>
           </div>
-
           <div class="proj-card">
             <div class="proj-title">💡 AI Knowledge Retrieval & RAG System in Copilot</div>
             <ul class="bullets">
-              <li>Identified automation opportunity by analysing support trends — surfaced that knowledge queries comprised <strong>~12% of all support cases</strong> — and built a product roadmap for conversational AI resolution</li>
+              <li>Identified automation opportunity by analysing support trends — surfaced that knowledge queries comprised <strong>~12% of all support cases</strong> — and built product roadmap for conversational AI resolution</li>
               <li>Owned end-to-end development of an <strong>AI-based RAG FAQ Bot</strong> in Sprinklr Copilots, enabling contextual self-service answers inside Ads Reporting and Ads Manager</li>
               <li>Accelerated self-service adoption via analytics, user feedback loops, and continuous model tuning — reducing time-to-resolution for support queries</li>
             </ul>
           </div>
-
         </div>
       </div>
-    </div>
 
-    <!-- ── Role 2 ── -->
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-card">
-        <div class="role-row">
-          <div class="role-name">Senior Product Analyst</div>
-          <span class="period-badge">March 2024 – June 2025</span>
+      <!-- Panel 1 -->
+      <div class="tab-panel" id="tab-1">
+        <div class="panel-header">
+          <div class="panel-title">Senior Product Analyst</div>
+          <div class="panel-meta">
+            <span class="panel-co"><span class="panel-co-dot"></span>Sprinklr · Gurugram</span>
+            <span class="panel-period">March 2024 – June 2025</span>
+          </div>
         </div>
-        <div class="company-line"><span class="cdot"></span> Sprinklr · Gurugram</div>
         <div class="proj-grid">
-
           <div class="proj-card">
             <div class="proj-title">📡 Advertising Channel API Integrations Owner</div>
             <ul class="bullets">
@@ -682,7 +746,6 @@
               <li>Shipped <strong>30+ features per quarter</strong> across <strong>8+ channels</strong>, consistently improving platform functionality and advertiser experience</li>
             </ul>
           </div>
-
           <div class="proj-card">
             <div class="proj-title">🎯 Product Strategy & Stakeholder Management</div>
             <ul class="bullets">
@@ -690,22 +753,19 @@
               <li>Managed <strong>100+ item backlog</strong>, planned sprints, and coordinated with engineering, design, and GTM teams to ship key features on time and at quality</li>
             </ul>
           </div>
-
         </div>
       </div>
-    </div>
 
-    <!-- ── Role 3 ── -->
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-card">
-        <div class="role-row">
-          <div class="role-name">Product Analyst</div>
-          <span class="period-badge">Feb 2022 – March 2024</span>
+      <!-- Panel 2 -->
+      <div class="tab-panel" id="tab-2">
+        <div class="panel-header">
+          <div class="panel-title">Product Analyst</div>
+          <div class="panel-meta">
+            <span class="panel-co"><span class="panel-co-dot"></span>Sprinklr · Gurugram</span>
+            <span class="panel-period">Feb 2022 – March 2024</span>
+          </div>
         </div>
-        <div class="company-line"><span class="cdot"></span> Sprinklr · Gurugram</div>
         <div class="proj-grid">
-
           <div class="proj-card">
             <div class="proj-title">✨ Usability & UX Improvement</div>
             <ul class="bullets">
@@ -713,11 +773,10 @@
               <li>Reduced workflow error rate by <strong>30% within six months</strong> through systematic improvements across <strong>500+ error messages</strong>, cutting support ticket volume significantly</li>
             </ul>
           </div>
-
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </div>
 
@@ -976,18 +1035,25 @@ const io = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.18 });
 
-document.querySelectorAll('.tl-item, .skill-cat, .stat-card, .edu-card').forEach(el => io.observe(el));
+document.querySelectorAll('.skill-cat, .stat-card, .edu-card').forEach(el => io.observe(el));
 
 // ── Staggered transition delays ──────────────────
-document.querySelectorAll('.tl-item').forEach((el, i) => {
-  el.style.transitionDelay = `${i * 0.1}s`;
-});
 document.querySelectorAll('.skill-cat').forEach((el, i) => {
   el.style.transitionDelay = `${i * 0.08}s`;
 });
 document.querySelectorAll('.stat-card').forEach((el, i) => {
   el.style.transitionDelay = `${i * 0.1}s`;
 });
+
+// ── Tab switching ─────────────────────────────────
+function switchTab(index, btn) {
+  // Deactivate all buttons and panels
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  // Activate selected
+  btn.classList.add('active');
+  document.getElementById('tab-' + index).classList.add('active');
+}
 
 // ── Click burst sparks ────────────────────────────
 function spawnBurst(x, y) {
