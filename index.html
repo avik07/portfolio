@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avik Dutta | Product Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Variables ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:         #05050c;
+      --bg2:        #0c0c1a;
+      --card:       rgba(255,255,255,0.04);
+      --card-hover: rgba(255,255,255,0.07);
+      --border:     rgba(255,255,255,0.08);
+      --blue:       #00d4ff;
+      --purple:     #8b5cf6;
+      --pink:       #ec4899;
+      --green:      #4ade80;
+      --grad:       linear-gradient(135deg, #00d4ff, #8b5cf6);
+      --text:       #ffffff;
+      --muted:      #94a3b8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 22px 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      background: rgba(5,5,12,0.55);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: padding .3s, background .3s;
+    }
+    nav.shrunk { padding: 14px 64px; background: rgba(5,5,12,0.92); }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px; font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      list-style: none; display: flex; gap: 36px; align-items: center;
+    }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 14px; font-weight: 500; letter-spacing: .3px;
+      transition: color .25s; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 2px;
+      background: var(--grad); border-radius: 2px; transition: width .3s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a:hover::after { width: 100%; }
+
+    .btn-nav {
+      background: var(--grad);
+      color: #fff !important; padding: 9px 22px; border-radius: 50px;
+      font-weight: 600 !important; font-size: 14px;
+      text-decoration: none; transition: box-shadow .3s, transform .25s;
+      display: inline-block;
+    }
+    .btn-nav:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,212,255,0.3);
+    }
+    .btn-nav::after { display: none !important; }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: .3s; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    #canvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+    }
+
+    /* Ambient gradient blobs */
+    .blob {
+      position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; opacity: .35;
+    }
+    .blob-1 { width: 500px; height: 500px; background: radial-gradient(circle, #00d4ff22, transparent 70%); top: -100px; right: -100px; }
+    .blob-2 { width: 600px; height: 600px; background: radial-gradient(circle, #8b5cf622, transparent 70%); bottom: -150px; left: -150px; }
+
+    .hero-inner {
+      position: relative; z-index: 2;
+      text-align: center; max-width: 860px; padding: 0 24px;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(139,92,246,.12); border: 1px solid rgba(139,92,246,.3);
+      padding: 7px 20px; border-radius: 50px;
+      font-size: 13px; color: var(--purple); font-weight: 600;
+      margin-bottom: 28px;
+      animation: fadeUp .8s ease both;
+    }
+    .dot-pulse {
+      width: 8px; height: 8px; background: var(--green); border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .hero-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(54px, 9vw, 96px);
+      font-weight: 800; line-height: 1; letter-spacing: -2px;
+      background: linear-gradient(130deg, #fff 0%, #e2e8f0 35%, #00d4ff 65%, #8b5cf6 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 16px;
+      animation: fadeUp .8s .15s ease both;
+    }
+
+    .hero-typing {
+      font-size: clamp(17px, 2.5vw, 24px);
+      color: var(--muted); height: 34px; margin-bottom: 8px;
+      animation: fadeUp .8s .3s ease both;
+    }
+    .typed { color: var(--blue); font-weight: 600; }
+    .cursor { border-right: 2.5px solid var(--blue); animation: blink .7s step-end infinite; }
+
+    .hero-sub {
+      font-size: 16px; color: var(--muted); max-width: 580px;
+      margin: 0 auto 38px; line-height: 1.75;
+      animation: fadeUp .8s .45s ease both;
+    }
+    .hero-sub strong { color: rgba(255,255,255,.85); font-weight: 600; }
+
+    .hero-btns {
+      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp .8s .6s ease both;
+    }
+
+    .btn-p {
+      background: var(--grad); color: #fff;
+      padding: 13px 32px; border-radius: 50px; font-weight: 600; font-size: 15px;
+      text-decoration: none; transition: transform .25s, box-shadow .3s;
+      position: relative; overflow: hidden;
+    }
+    .btn-p::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+      transition: left .5s;
+    }
+    .btn-p:hover::before { left: 100%; }
+    .btn-p:hover { transform: translateY(-3px); box-shadow: 0 16px 44px rgba(0,212,255,.35); }
+
+    .btn-s {
+      background: transparent; color: #fff;
+      padding: 13px 32px; border-radius: 50px; font-weight: 600; font-size: 15px;
+      text-decoration: none; border: 1px solid rgba(255,255,255,.2);
+      transition: all .25s;
+    }
+    .btn-s:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.4); transform: translateY(-3px); }
+
+    .scroll-hint {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--muted); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+      animation: fadeUp 1s .9s ease both;
+    }
+    .scroll-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, var(--blue), transparent);
+      animation: scroller 2.2s ease infinite;
+    }
+
+    /* ── STATS ── */
+    .stats-wrap {
+      background: var(--bg2); padding: 80px 64px;
+    }
+    .stats-grid {
+      max-width: 1160px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px;
+    }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 34px 24px; text-align: center;
+      position: relative; overflow: hidden;
+      transition: transform .4s, border-color .4s, box-shadow .4s;
+      opacity: 0; transform: translateY(24px);
+    }
+    .stat-card.vis { opacity: 1; transform: translateY(0); }
+    .stat-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--grad); opacity: 0; transition: opacity .4s;
+    }
+    .stat-card:hover { transform: translateY(-8px); border-color: rgba(0,212,255,.2); box-shadow: 0 24px 60px rgba(0,0,0,.4); }
+    .stat-card:hover::after { opacity: 1; }
+    .stat-ico { font-size: 34px; margin-bottom: 14px; }
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 50px; font-weight: 800; line-height: 1;
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 8px;
+    }
+    .stat-lbl { color: var(--muted); font-size: 14px; font-weight: 500; line-height: 1.4; }
+
+    /* ── SECTION SKELETON ── */
+    .section {
+      max-width: 1160px; margin: 0 auto; padding: 100px 64px;
+    }
+    .s-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--blue); margin-bottom: 10px;
+    }
+    .s-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(30px, 4.5vw, 50px); font-weight: 700; line-height: 1.1; margin-bottom: 16px;
+    }
+    .s-title em {
+      font-style: normal;
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .s-sub { color: var(--muted); font-size: 16px; max-width: 560px; line-height: 1.75; margin-bottom: 56px; }
+
+    /* ── TIMELINE ── */
+    .timeline { position: relative; }
+    .timeline::before {
+      content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 2px;
+      background: linear-gradient(to bottom, var(--blue), var(--purple), transparent);
+    }
+
+    .tl-item {
+      position: relative; padding-left: 76px; margin-bottom: 56px;
+      opacity: 0; transform: translateX(-28px); transition: all .6s ease;
+    }
+    .tl-item.vis { opacity: 1; transform: translateX(0); }
+
+    .tl-dot {
+      position: absolute; left: 12px; top: 10px;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--grad); border: 3px solid var(--bg); z-index: 1;
+      box-shadow: 0 0 18px rgba(0,212,255,.4);
+    }
+
+    .tl-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 30px 34px;
+      transition: transform .35s, border-color .35s, box-shadow .35s;
+    }
+    .tl-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0,212,255,.18);
+      box-shadow: 0 24px 60px rgba(0,0,0,.35);
+      background: rgba(255,255,255,.055);
+    }
+
+    .role-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 10px; margin-bottom: 14px;
+    }
+    .role-name {
+      font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .now-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(74,222,128,.1); border: 1px solid rgba(74,222,128,.3);
+      color: var(--green); padding: 3px 12px; border-radius: 50px;
+      font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif;
+    }
+    .now-badge::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+
+    .period-badge {
+      background: rgba(0,212,255,.09); border: 1px solid rgba(0,212,255,.2);
+      color: var(--blue); padding: 5px 16px; border-radius: 50px;
+      font-size: 13px; font-weight: 500; white-space: nowrap;
+    }
+
+    .company-line {
+      color: var(--muted); font-size: 14px; margin-bottom: 28px;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .cdot { width: 5px; height: 5px; background: var(--purple); border-radius: 50%; }
+
+    .proj-grid { display: grid; gap: 18px; }
+    .proj-card {
+      background: rgba(255,255,255,.025); border: 1px solid rgba(255,255,255,.055);
+      border-radius: 14px; padding: 22px 24px;
+      transition: background .3s, border-color .3s;
+    }
+    .proj-card:hover { background: rgba(0,212,255,.04); border-color: rgba(0,212,255,.14); }
+
+    .proj-title {
+      font-size: 14px; font-weight: 700; color: var(--blue);
+      display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+    }
+
+    .bullets { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .bullets li {
+      color: var(--muted); font-size: 13.5px; line-height: 1.7;
+      position: relative; padding-left: 18px;
+    }
+    .bullets li::before {
+      content: '›'; color: var(--purple); font-size: 17px; line-height: 1.55;
+      position: absolute; left: 0; top: 0;
+    }
+    .bullets strong { color: rgba(255,255,255,.82); font-weight: 600; }
+
+    /* ── SKILLS ── */
+    .skills-wrap { background: var(--bg2); padding: 100px 0; }
+    .skills-inner { max-width: 1160px; margin: 0 auto; padding: 0 64px; }
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+
+    .skill-cat {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 26px;
+      transition: transform .4s, border-color .4s, box-shadow .4s;
+      opacity: 0; transform: translateY(20px);
+    }
+    .skill-cat.vis { opacity: 1; transform: translateY(0); }
+    .skill-cat:hover { transform: translateY(-6px); border-color: rgba(139,92,246,.28); box-shadow: 0 20px 50px rgba(0,0,0,.3); }
+
+    .cat-title {
+      font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--purple); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .cat-title span { font-size: 18px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.09);
+      color: var(--muted); padding: 6px 14px; border-radius: 8px;
+      font-size: 12.5px; font-weight: 500;
+      transition: all .25s; cursor: default;
+    }
+    .tag:hover { background: rgba(0,212,255,.1); border-color: rgba(0,212,255,.3); color: var(--blue); transform: translateY(-2px); }
+
+    /* ── EDUCATION ── */
+    .edu-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 36px 40px;
+      display: flex; align-items: center; gap: 28px;
+      transition: transform .35s, border-color .35s, box-shadow .35s;
+      opacity: 0; transform: translateY(20px);
+    }
+    .edu-card.vis { opacity: 1; transform: translateY(0); }
+    .edu-card:hover { transform: translateY(-5px); border-color: rgba(139,92,246,.2); box-shadow: 0 20px 50px rgba(0,0,0,.3); }
+
+    .edu-ico {
+      width: 72px; height: 72px; border-radius: 18px;
+      background: linear-gradient(135deg, rgba(139,92,246,.2), rgba(0,212,255,.2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 34px; flex-shrink: 0;
+    }
+    .edu-degree { font-size: 21px; font-weight: 700; margin-bottom: 5px; }
+    .edu-inst { color: var(--muted); font-size: 14px; margin-bottom: 12px; }
+    .edu-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .edu-pill {
+      background: rgba(0,212,255,.09); border: 1px solid rgba(0,212,255,.2);
+      color: var(--blue); padding: 4px 14px; border-radius: 50px;
+      font-size: 12.5px; font-weight: 600;
+    }
+
+    /* ── CONTACT ── */
+    .contact-wrap { background: var(--bg2); padding: 100px 0; }
+    .contact-inner { max-width: 1160px; margin: 0 auto; padding: 0 64px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+
+    .contact-h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(30px, 4vw, 46px); font-weight: 700; line-height: 1.2; margin-bottom: 16px;
+    }
+    .contact-p { color: var(--muted); font-size: 15px; line-height: 1.75; margin-bottom: 34px; }
+
+    .c-links { display: flex; flex-direction: column; gap: 14px; }
+    .c-link {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 18px 22px;
+      text-decoration: none; color: #fff;
+      transition: transform .3s, border-color .3s, background .3s, box-shadow .3s;
+    }
+    .c-link:hover {
+      transform: translateX(6px);
+      border-color: rgba(0,212,255,.28); background: rgba(0,212,255,.05);
+      box-shadow: 0 8px 30px rgba(0,0,0,.2);
+    }
+    .c-ico {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--grad); display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .c-info strong { display: block; font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .c-info span { color: var(--muted); font-size: 13px; }
+
+    /* Contact orb */
+    .orb-wrap { display: flex; align-items: center; justify-content: center; }
+    .orb {
+      width: 320px; height: 320px; border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(0,212,255,.12) 0%, rgba(139,92,246,.08) 50%, transparent 70%);
+      display: flex; align-items: center; justify-content: center;
+      animation: orbFloat 6s ease-in-out infinite;
+      position: relative;
+    }
+    .orb::before {
+      content: ''; position: absolute; inset: 0; border-radius: 50%;
+      border: 1px solid rgba(0,212,255,.12); animation: orbSpin 12s linear infinite;
+    }
+    .orb::after {
+      content: ''; position: absolute;
+      width: 200px; height: 200px; border-radius: 50%;
+      border: 1px dashed rgba(139,92,246,.2); animation: orbSpin 8s linear infinite reverse;
+    }
+    .orb-inner {
+      width: 190px; height: 190px; border-radius: 50%;
+      border: 1.5px solid rgba(0,212,255,.2);
+      display: flex; align-items: center; justify-content: center; z-index: 2;
+    }
+    .orb-text {
+      font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700;
+      text-align: center; line-height: 1.3;
+      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg); text-align: center;
+      padding: 36px; color: var(--muted); font-size: 13.5px;
+      border-top: 1px solid var(--border);
+    }
+    footer em {
+      font-style: normal; font-weight: 600;
+      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ── KEYFRAMES ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .45; transform: scale(.8); }
+    }
+    @keyframes blink {
+      0%,100% { border-color: var(--blue); }
+      50%      { border-color: transparent; }
+    }
+    @keyframes scroller {
+      0%   { transform: scaleY(0); transform-origin: top; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      50.01% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+    @keyframes orbFloat {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-14px); }
+    }
+    @keyframes orbSpin { to { transform: rotate(360deg); } }
+
+    /* ── CLICK EFFECTS ── */
+    .spark {
+      position: fixed; pointer-events: none; z-index: 9999;
+      width: 7px; height: 7px; border-radius: 50%;
+    }
+    .ripple {
+      position: absolute; pointer-events: none;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.45);
+      transform: translate(-50%,-50%) scale(0);
+      animation: rippleOut .65s ease-out forwards;
+    }
+    @keyframes rippleOut {
+      to { transform: translate(-50%,-50%) scale(60); opacity: 0; }
+    }
+    @keyframes tagPop {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.18); box-shadow: 0 0 14px rgba(0,212,255,.5); }
+      100% { transform: scale(1); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      nav.shrunk { padding: 12px 24px; }
+      .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; background: rgba(5,5,12,.98); padding: 20px 24px; gap: 18px; border-bottom: 1px solid var(--border); }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .btn-nav { display: none; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .skills-grid { grid-template-columns: repeat(2,1fr); }
+      .contact-grid { grid-template-columns: 1fr; }
+      .orb-wrap { display: none; }
+      .section, .skills-inner, .contact-inner { padding-left: 24px; padding-right: 24px; }
+      .stats-wrap { padding: 64px 24px; }
+    }
+
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .tl-item { padding-left: 56px; }
+      .timeline::before { left: 18px; }
+      .tl-dot { left: 6px; }
+      .tl-card { padding: 20px; }
+      .edu-card { flex-direction: column; text-align: center; }
+      .edu-pills { justify-content: center; }
+      .role-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ──────────── NAV ──────────── -->
+<nav id="nav">
+  <div class="logo">AD</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="btn-nav">Let's Connect</a>
+  <div class="hamburger" id="ham" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ──────────── HERO ──────────── -->
+<div class="hero" id="hero">
+  <canvas id="canvas"></canvas>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="dot-pulse"></span>
+      Open to New Opportunities
+    </div>
+
+    <h1 class="hero-name">Avik Dutta</h1>
+
+    <div class="hero-typing">
+      <span class="typed" id="typed"></span><span class="cursor"></span>
+    </div>
+
+    <p class="hero-sub">
+      Product Manager with <strong>3+ years at Sprinklr</strong>, building AI-powered ad-tech platforms that
+      manage <strong>~70% of total platform ad spend</strong> and deliver measurable enterprise outcomes.
+    </p>
+
+    <div class="hero-btns">
+      <a href="#experience" class="btn-p">View My Work</a>
+      <a href="#contact" class="btn-s">Get in Touch →</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- ──────────── STATS ──────────── -->
+<div class="stats-wrap" id="statsWrap">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-ico">🚀</div>
+      <div class="stat-num"><span class="ctr" data-to="3">0</span>+</div>
+      <div class="stat-lbl">Years in Product Management</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico">📊</div>
+      <div class="stat-num"><span class="ctr" data-to="70">0</span>%</div>
+      <div class="stat-lbl">Platform Ad Spend Managed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico">⚡</div>
+      <div class="stat-num"><span class="ctr" data-to="30">0</span>+</div>
+      <div class="stat-lbl">Features Shipped Per Quarter</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico">🏢</div>
+      <div class="stat-num"><span class="ctr" data-to="50">0</span>+</div>
+      <div class="stat-lbl">Enterprise Accounts Scaled</div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── EXPERIENCE ──────────── -->
+<div class="section" id="experience">
+  <div class="s-label">Career Journey</div>
+  <h2 class="s-title">Work <em>Experience</em></h2>
+  <p class="s-sub">Building AI-powered ad-tech and analytics products at Sprinklr — from analyst to associate product manager.</p>
+
+  <div class="timeline">
+
+    <!-- ── Role 1 ── -->
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="role-row">
+          <div class="role-name">
+            Associate Product Manager
+            <span class="now-badge">Current</span>
+          </div>
+          <span class="period-badge">June 2025 – Present</span>
+        </div>
+        <div class="company-line"><span class="cdot"></span> Sprinklr · Gurugram</div>
+        <div class="proj-grid">
+
+          <div class="proj-card">
+            <div class="proj-title">🤖 AI-Powered Media Plan to Campaign Generation</div>
+            <ul class="bullets">
+              <li>Driving POC for an <strong>AI-powered Media Plan ingestion engine</strong> that converts external media plans (Excel/CSV) into omni-channel campaign structures across <strong>8+ social channels</strong>, targeting enterprise advertisers</li>
+              <li>Coordinating cross-functional execution with ML, backend, and design teams; projected to eliminate manual campaign setup for <strong>80%+ of enterprise ad creation workflows</strong></li>
+            </ul>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-title">🛡️ AI & Governance Automation</div>
+            <ul class="bullets">
+              <li>Launched <strong>Automated Governance Checklist</strong> — led end-to-end discovery via market research, competitive analysis, and <strong>10+ customer calls</strong> to validate product-market fit</li>
+              <li>Architected governance workflows spanning <strong>60+ ad parameters across 8 social channels</strong>, integrating brand taxonomy, compliance rules, and platform-specific ad policies</li>
+              <li>Drove <strong>25% reduction in campaign creation time</strong> and prevented budget overruns for <strong>20+ enterprise partners</strong> by automating manual governance tasks end-to-end</li>
+              <li>Deployed <strong>5+ AI models</strong> into publishing workflows, enforcing brand safety and ad-policy compliance at scale across all media assets</li>
+              <li>Spearheaded GTM execution — delivered <strong>20+ customer demos</strong>, scaled beta to <strong>50+ enterprise accounts</strong>, and built enablement collateral driving product adoption</li>
+            </ul>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-title">💡 AI Knowledge Retrieval & RAG System in Copilot</div>
+            <ul class="bullets">
+              <li>Identified automation opportunity by analysing support trends — surfaced that knowledge queries comprised <strong>~12% of all support cases</strong> — and built a product roadmap for conversational AI resolution</li>
+              <li>Owned end-to-end development of an <strong>AI-based RAG FAQ Bot</strong> in Sprinklr Copilots, enabling contextual self-service answers inside Ads Reporting and Ads Manager</li>
+              <li>Accelerated self-service adoption via analytics, user feedback loops, and continuous model tuning — reducing time-to-resolution for support queries</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Role 2 ── -->
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="role-row">
+          <div class="role-name">Senior Product Analyst</div>
+          <span class="period-badge">March 2024 – June 2025</span>
+        </div>
+        <div class="company-line"><span class="cdot"></span> Sprinklr · Gurugram</div>
+        <div class="proj-grid">
+
+          <div class="proj-card">
+            <div class="proj-title">📡 Advertising Channel API Integrations Owner</div>
+            <ul class="bullets">
+              <li>Owned end-to-end integrations for <strong>Meta & TikTok</strong>, collectively managing <strong>~70% of total platform ad spend</strong></li>
+              <li>Developed <strong>channel strategy roadmap</strong> through in-depth market analysis, creating a unified directional view guiding future integrations</li>
+              <li>Shipped <strong>30+ features per quarter</strong> across <strong>8+ channels</strong>, consistently improving platform functionality and advertiser experience</li>
+            </ul>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-title">🎯 Product Strategy & Stakeholder Management</div>
+            <ul class="bullets">
+              <li>Conducted <strong>competitive analysis across 8+ ad-tech platforms</strong>, synthesising insights to directly influence prioritisation, positioning, and investment decisions</li>
+              <li>Managed <strong>100+ item backlog</strong>, planned sprints, and coordinated with engineering, design, and GTM teams to ship key features on time and at quality</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Role 3 ── -->
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="role-row">
+          <div class="role-name">Product Analyst</div>
+          <span class="period-badge">Feb 2022 – March 2024</span>
+        </div>
+        <div class="company-line"><span class="cdot"></span> Sprinklr · Gurugram</div>
+        <div class="proj-grid">
+
+          <div class="proj-card">
+            <div class="proj-title">✨ Usability & UX Improvement</div>
+            <ul class="bullets">
+              <li>Optimised user journeys by mapping <strong>15+ touchpoints</strong> across customer workflows, identifying friction areas impacting platform stickiness and retention</li>
+              <li>Reduced workflow error rate by <strong>30% within six months</strong> through systematic improvements across <strong>500+ error messages</strong>, cutting support ticket volume significantly</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ──────────── SKILLS ──────────── -->
+<div class="skills-wrap" id="skills">
+  <div class="skills-inner">
+    <div class="s-label">What I Bring</div>
+    <h2 class="s-title">Skills & <em>Expertise</em></h2>
+    <p class="s-sub">A blend of product strategy, technical depth, and execution excellence — built over 3+ years in B2B SaaS ad-tech.</p>
+
+    <div class="skills-grid">
+      <div class="skill-cat">
+        <div class="cat-title"><span>🗺️</span> Product Strategy</div>
+        <div class="tags">
+          <span class="tag">Product Roadmapping</span>
+          <span class="tag">Competitive Analysis</span>
+          <span class="tag">Market Research</span>
+          <span class="tag">Product-Market Fit</span>
+          <span class="tag">GTM Strategy</span>
+          <span class="tag">Feature Prioritisation</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="cat-title"><span>🤖</span> AI & Technology</div>
+        <div class="tags">
+          <span class="tag">RAG Systems</span>
+          <span class="tag">LLM Integration</span>
+          <span class="tag">AI Product Design</span>
+          <span class="tag">API Integrations</span>
+          <span class="tag">ML Workflows</span>
+          <span class="tag">Automation</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="cat-title"><span>📈</span> Execution & Delivery</div>
+        <div class="tags">
+          <span class="tag">Sprint Planning</span>
+          <span class="tag">Backlog Management</span>
+          <span class="tag">Agile / Scrum</span>
+          <span class="tag">Cross-functional Teams</span>
+          <span class="tag">OKRs & KPIs</span>
+          <span class="tag">Data-driven Decisions</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="cat-title"><span>📣</span> Ad-Tech Domain</div>
+        <div class="tags">
+          <span class="tag">Meta Ads API</span>
+          <span class="tag">TikTok Ads API</span>
+          <span class="tag">Omni-channel Ads</span>
+          <span class="tag">Campaign Management</span>
+          <span class="tag">Ad Governance</span>
+          <span class="tag">B2B SaaS</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="cat-title"><span>🎨</span> UX & Research</div>
+        <div class="tags">
+          <span class="tag">User Journey Mapping</span>
+          <span class="tag">Customer Interviews</span>
+          <span class="tag">Usability Testing</span>
+          <span class="tag">Error Analysis</span>
+          <span class="tag">Beta Programs</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="cat-title"><span>🤝</span> Stakeholder Management</div>
+        <div class="tags">
+          <span class="tag">Executive Communication</span>
+          <span class="tag">Customer Success</span>
+          <span class="tag">Enterprise Sales</span>
+          <span class="tag">Product Demos</span>
+          <span class="tag">Enablement Collateral</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── EDUCATION ──────────── -->
+<div class="section" id="education">
+  <div class="s-label">Academic Background</div>
+  <h2 class="s-title"><em>Education</em></h2>
+  <br/>
+  <div class="edu-card">
+    <div class="edu-ico">🎓</div>
+    <div>
+      <div class="edu-degree">Bachelor of Technology</div>
+      <div class="edu-inst">Techno India, Kolkata &nbsp;·&nbsp; Deemed University</div>
+      <div class="edu-pills">
+        <span class="edu-pill">Class of 2018</span>
+        <span class="edu-pill">CGPA: 7.95 / 10</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── CONTACT ──────────── -->
+<div class="contact-wrap" id="contact">
+  <div class="contact-inner">
+    <div class="contact-grid">
+      <div>
+        <div class="s-label">Get In Touch</div>
+        <h2 class="contact-h2">Let's Build <em style="font-style:normal; background:var(--grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Something</em> Amazing</h2>
+        <p class="contact-p">Open to product leadership opportunities in AI, ad-tech, and B2B SaaS. Let's connect and explore how I can drive impact at your organisation.</p>
+        <div class="c-links">
+          <a href="tel:+919831576210" class="c-link">
+            <div class="c-ico">📱</div>
+            <div class="c-info"><strong>Phone</strong><span>+91 9831576210</span></div>
+          </a>
+          <a href="mailto:avikdutta7@gmail.com" class="c-link">
+            <div class="c-ico">✉️</div>
+            <div class="c-info"><strong>Email</strong><span>avikdutta7@gmail.com</span></div>
+          </a>
+          <a href="https://linkedin.com/in/avikdutta7/" target="_blank" rel="noopener" class="c-link">
+            <div class="c-ico">💼</div>
+            <div class="c-info"><strong>LinkedIn</strong><span>linkedin.com/in/avikdutta7/</span></div>
+          </a>
+        </div>
+      </div>
+      <div class="orb-wrap">
+        <div class="orb">
+          <div class="orb-inner">
+            <div class="orb-text">Let's<br/>Connect</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── FOOTER ──────────── -->
+<footer>
+  <p>Crafted with ❤️ &nbsp;·&nbsp; <em>Avik Dutta</em> &nbsp;·&nbsp; Product Manager &nbsp;·&nbsp; 2026</p>
+</footer>
+
+<!-- ──────────── SCRIPTS ──────────── -->
+<script>
+// ── Particle Canvas ──────────────────────────────
+const canvas = document.getElementById('canvas');
+const ctx    = canvas.getContext('2d');
+let pts = [], raf;
+
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', () => { resize(); spawnPts(); });
+
+function Pt() {
+  this.x  = Math.random() * canvas.width;
+  this.y  = Math.random() * canvas.height;
+  this.vx = (Math.random() - .5) * .45;
+  this.vy = (Math.random() - .5) * .45;
+  this.r  = Math.random() * 1.8 + .5;
+  this.a  = Math.random() * .45 + .1;
+  this.c  = Math.random() > .5 ? '#00d4ff' : '#8b5cf6';
+}
+
+function spawnPts() {
+  pts = [];
+  const n = Math.min(110, Math.floor(canvas.width * canvas.height / 10000));
+  for (let i = 0; i < n; i++) pts.push(new Pt());
+}
+spawnPts();
+
+function drawPts() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  pts.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.c;
+    ctx.globalAlpha = p.a;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  });
+  // connections
+  for (let i = 0; i < pts.length; i++) {
+    for (let j = i + 1; j < pts.length; j++) {
+      const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+      const d  = Math.sqrt(dx*dx + dy*dy);
+      if (d < 130) {
+        ctx.beginPath();
+        ctx.moveTo(pts[i].x, pts[i].y);
+        ctx.lineTo(pts[j].x, pts[j].y);
+        ctx.strokeStyle = `rgba(0,212,255,${.09*(1-d/130)})`;
+        ctx.lineWidth = .7;
+        ctx.stroke();
+      }
+    }
+  }
+  raf = requestAnimationFrame(drawPts);
+}
+drawPts();
+
+// pause particles when hero scrolled out
+new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) { drawPts(); }
+  else { cancelAnimationFrame(raf); }
+}).observe(document.querySelector('.hero'));
+
+// ── Typing animation ─────────────────────────────
+const phrases = ['Product Manager','Ad-Tech Builder','AI Product Leader','B2B SaaS Expert'];
+let pi = 0, ci = 0, del = false;
+const el = document.getElementById('typed');
+function type() {
+  const word = phrases[pi];
+  el.textContent = del ? word.slice(0, --ci) : word.slice(0, ++ci);
+  let spd = del ? 55 : 95;
+  if (!del && ci === word.length)   { spd = 2000; del = true; }
+  else if (del && ci === 0)         { del = false; pi = (pi+1) % phrases.length; spd = 350; }
+  setTimeout(type, spd);
+}
+type();
+
+// ── Navbar shrink ────────────────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('shrunk', window.scrollY > 50);
+});
+
+// ── Mobile nav ───────────────────────────────────
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
+  document.getElementById('navLinks').classList.remove('open');
+}));
+
+// ── Intersection observer (reveal + counters) ────
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('vis');
+    e.target.querySelectorAll('.ctr:not(.done)').forEach(c => {
+      c.classList.add('done');
+      const target = +c.dataset.to, start = performance.now();
+      const tick = now => {
+        const t = Math.min((now - start) / 1400, 1);
+        const ease = 1 - Math.pow(1-t, 3);
+        c.textContent = Math.floor(ease * target);
+        if (t < 1) requestAnimationFrame(tick); else c.textContent = target;
+      };
+      requestAnimationFrame(tick);
+    });
+    io.unobserve(e.target);
+  });
+}, { threshold: 0.18 });
+
+document.querySelectorAll('.tl-item, .skill-cat, .stat-card, .edu-card').forEach(el => io.observe(el));
+
+// ── Staggered transition delays ──────────────────
+document.querySelectorAll('.tl-item').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.1}s`;
+});
+document.querySelectorAll('.skill-cat').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.08}s`;
+});
+document.querySelectorAll('.stat-card').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.1}s`;
+});
+
+// ── Click burst sparks ────────────────────────────
+function spawnBurst(x, y) {
+  const colors = ['#00d4ff','#8b5cf6','#ec4899','#4ade80','#ffffff'];
+  const count  = 14;
+  for (let i = 0; i < count; i++) {
+    const sp   = document.createElement('div');
+    sp.className = 'spark';
+    const angle  = (i / count) * Math.PI * 2;
+    const dist   = 36 + Math.random() * 44;
+    const tx     = Math.cos(angle) * dist;
+    const ty     = Math.sin(angle) * dist;
+    const size   = 4 + Math.random() * 5;
+    const color  = colors[Math.floor(Math.random() * colors.length)];
+    sp.style.cssText = `left:${x}px;top:${y}px;width:${size}px;height:${size}px;background:${color}`;
+    document.body.appendChild(sp);
+    sp.animate([
+      { transform:'translate(-50%,-50%) scale(1)', opacity:1 },
+      { transform:`translate(calc(-50% + ${tx}px),calc(-50% + ${ty}px)) scale(0)`, opacity:0 }
+    ], { duration: 550 + Math.random()*200, easing:'cubic-bezier(0,.9,.57,1)', fill:'forwards' })
+    .onfinish = () => sp.remove();
+  }
+}
+document.addEventListener('click', e => spawnBurst(e.clientX, e.clientY));
+
+// ── Button ripple ─────────────────────────────────
+document.querySelectorAll('.btn-p, .btn-s, .btn-nav').forEach(btn => {
+  btn.style.position = 'relative';
+  btn.style.overflow = 'hidden';
+  btn.addEventListener('click', function(e) {
+    const r    = this.getBoundingClientRect();
+    const rip  = document.createElement('span');
+    rip.className = 'ripple';
+    rip.style.cssText = `left:${e.clientX - r.left}px;top:${e.clientY - r.top}px`;
+    this.appendChild(rip);
+    setTimeout(() => rip.remove(), 700);
+  });
+});
+
+// ── Skill tag click pop ───────────────────────────
+document.querySelectorAll('.tag').forEach(tag => {
+  tag.addEventListener('click', function() {
+    this.style.animation = 'none';
+    void this.offsetWidth; // reflow
+    this.style.animation = 'tagPop .35s ease forwards';
+  });
+});
+
+// ── Project card click flash ──────────────────────
+document.querySelectorAll('.proj-card').forEach(card => {
+  card.addEventListener('click', function() {
+    this.style.transition = 'background .1s';
+    this.style.background = 'rgba(0,212,255,.09)';
+    setTimeout(() => {
+      this.style.background = '';
+      this.style.transition = '';
+    }, 200);
+  });
+});
+</script>
+</body>
+</html>
