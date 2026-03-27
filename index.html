@@ -257,56 +257,66 @@
 
     /* ── EXPERIENCE TABS ── */
     .exp-layout {
-      display: grid; grid-template-columns: 270px 1fr;
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      grid-template-rows: repeat(3, auto);
       border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
-      min-height: 420px;
     }
 
-    .tab-list {
-      border-right: 1px solid var(--border);
-      background: rgba(255,255,255,.02);
-      display: flex; flex-direction: column;
-    }
+    /* On desktop, tab-group vanishes as a box — children join parent grid directly */
+    .tab-group { display: contents; }
 
     .tab-btn {
-      display: block; width: 100%; background: none; border: none;
+      grid-column: 1;
+      background: rgba(255,255,255,.02); border: none;
       padding: 22px 24px; text-align: left; cursor: pointer;
       border-left: 3px solid transparent;
+      border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border);
       transition: background .25s, border-color .25s;
       position: relative;
+      display: flex; justify-content: space-between; align-items: flex-start;
     }
-    .tab-btn + .tab-btn { border-top: 1px solid var(--border); }
-    .tab-btn:hover:not(.active) { background: rgba(255,255,255,.04); }
-    .tab-btn.active {
+    .tab-group:first-child .tab-btn { border-top: none; }
+    .tab-btn-info { flex: 1; min-width: 0; }
+    .tab-btn:hover { background: rgba(255,255,255,.05); }
+    .tab-group.active .tab-btn {
       background: rgba(0,212,255,.07);
       border-left-color: var(--blue);
     }
-    .tab-btn.active::after {
+    /* Arrow pointing right into the panel */
+    .tab-group.active .tab-btn::after {
       content: ''; position: absolute; right: -1px; top: 50%;
       transform: translateY(-50%);
       width: 0; height: 0;
       border-top: 8px solid transparent;
       border-bottom: 8px solid transparent;
-      border-right: 8px solid var(--bg2, #0c0c1a);
+      border-right: 8px solid var(--bg);
     }
+
+    /* Chevron — hidden on desktop, shown on mobile */
+    .tab-chev {
+      display: none; flex-shrink: 0; margin-left: 12px; margin-top: 2px;
+      color: var(--muted); transition: transform .3s, color .25s;
+    }
+    .tab-group.active .tab-chev { color: var(--blue); }
 
     .tab-role {
       display: block; font-size: 14px; font-weight: 600;
       color: var(--muted); margin-bottom: 5px; line-height: 1.3;
       transition: color .25s;
     }
-    .tab-btn.active .tab-role { color: #fff; }
+    .tab-group.active .tab-role { color: #fff; }
 
     .tab-co {
       display: flex; align-items: center; gap: 6px;
-      font-size: 12px; color: var(--muted); margin-bottom: 5px;
-      opacity: .75;
+      font-size: 12px; color: var(--muted); margin-bottom: 5px; opacity: .75;
     }
     .tab-co-dot { width: 5px; height: 5px; background: var(--purple); border-radius: 50%; flex-shrink: 0; }
 
     .tab-period {
       display: block; font-size: 11.5px;
-      color: var(--blue); font-weight: 500; opacity: .8;
+      color: var(--blue); font-weight: 500; opacity: .85;
     }
     .tab-now {
       display: inline-flex; align-items: center; gap: 4px;
@@ -316,10 +326,14 @@
     }
     .tab-now::before { content: ''; width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
 
-    .tab-panels { padding: 34px 36px; overflow: auto; }
-
-    .tab-panel { display: none; }
-    .tab-panel.active {
+    /* Panel: all 3 stack in the same grid cell (col 2, rows 1–3) */
+    .tab-panel {
+      grid-column: 2;
+      grid-row: 1 / 4;
+      display: none;
+      padding: 34px 36px;
+    }
+    .tab-group.active .tab-panel {
       display: block;
       animation: panelFade .35s ease;
     }
@@ -340,15 +354,52 @@
       font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif;
     }
     .now-badge::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
-    .panel-meta {
-      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-    }
+    .panel-meta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
     .panel-co { color: var(--muted); font-size: 14px; display: flex; align-items: center; gap: 6px; }
     .panel-co-dot { width: 5px; height: 5px; background: var(--purple); border-radius: 50%; }
     .panel-period {
       background: rgba(0,212,255,.09); border: 1px solid rgba(0,212,255,.2);
       color: var(--blue); padding: 4px 14px; border-radius: 50px;
       font-size: 12px; font-weight: 500;
+    }
+
+    /* ── MOBILE ACCORDION ── */
+    @media (max-width: 860px) {
+      .exp-layout {
+        display: block; /* stack groups vertically */
+      }
+      .tab-group {
+        display: block;
+        border-bottom: 1px solid var(--border);
+      }
+      .tab-group:last-child { border-bottom: none; }
+
+      .tab-btn {
+        width: 100%; grid-column: unset;
+        border-top: none; border-right: none;
+        border-left: 3px solid transparent;
+        padding: 20px 22px;
+        align-items: center;
+      }
+      .tab-group:first-child .tab-btn { border-top: none; }
+      .tab-group.active .tab-btn {
+        border-left-color: var(--blue);
+        background: rgba(0,212,255,.06);
+        border-bottom: 1px solid rgba(0,212,255,.12);
+      }
+      /* hide desktop triangle arrow on mobile */
+      .tab-group.active .tab-btn::after { display: none; }
+
+      /* show chevron on mobile */
+      .tab-chev { display: block; }
+      .tab-group.active .tab-chev { transform: rotate(180deg); }
+
+      .tab-panel {
+        grid-column: unset; grid-row: unset;
+        padding: 20px 22px 26px;
+        border-top: 1px solid var(--border);
+      }
+      .tab-co { display: flex; } /* ensure company line always shows */
     }
 
     .proj-grid { display: grid; gap: 18px; }
@@ -567,17 +618,6 @@
       .stats-wrap { padding: 64px 24px; }
     }
 
-    @media (max-width: 860px) {
-      .exp-layout { grid-template-columns: 1fr; }
-      .tab-list { flex-direction: row; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--border); }
-      .tab-btn { padding: 14px 18px; border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; flex-shrink: 0; }
-      .tab-btn.active { border-left-color: transparent; border-bottom-color: var(--blue); }
-      .tab-btn.active::after { display: none; }
-      .tab-btn + .tab-btn { border-top: none; border-left: 1px solid var(--border); }
-      .tab-co { display: none; }
-      .tab-panels { padding: 24px; }
-    }
-
     @media (max-width: 600px) {
       .stats-grid { grid-template-columns: 1fr 1fr; }
       .skills-grid { grid-template-columns: 1fr; }
@@ -678,40 +718,20 @@
 
   <div class="exp-layout">
 
-    <!-- ── Tab buttons ── -->
-    <div class="tab-list">
-
-      <button class="tab-btn active" onclick="switchTab(0, this)">
-        <span class="tab-role">Associate Product Manager</span>
-        <div class="tab-co"><span class="tab-co-dot"></span>Sprinklr · Gurugram</div>
-        <span class="tab-period">June 2025 – Present</span>
-        <span class="tab-now">Current</span>
+    <!-- ── Group 1 ── -->
+    <div class="tab-group active">
+      <button class="tab-btn" onclick="switchTab(this)">
+        <div class="tab-btn-info">
+          <span class="tab-role">Associate Product Manager</span>
+          <div class="tab-co"><span class="tab-co-dot"></span>Sprinklr · Gurugram</div>
+          <span class="tab-period">June 2025 – Present</span>
+          <span class="tab-now">Current</span>
+        </div>
+        <svg class="tab-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
-
-      <button class="tab-btn" onclick="switchTab(1, this)">
-        <span class="tab-role">Senior Product Analyst</span>
-        <div class="tab-co"><span class="tab-co-dot"></span>Sprinklr · Gurugram</div>
-        <span class="tab-period">Mar 2024 – June 2025</span>
-      </button>
-
-      <button class="tab-btn" onclick="switchTab(2, this)">
-        <span class="tab-role">Product Analyst</span>
-        <div class="tab-co"><span class="tab-co-dot"></span>Sprinklr · Gurugram</div>
-        <span class="tab-period">Feb 2022 – Mar 2024</span>
-      </button>
-
-    </div>
-
-    <!-- ── Tab panels ── -->
-    <div class="tab-panels">
-
-      <!-- Panel 0 -->
-      <div class="tab-panel active" id="tab-0">
+      <div class="tab-panel">
         <div class="panel-header">
-          <div class="panel-title">
-            Associate Product Manager
-            <span class="now-badge">Current</span>
-          </div>
+          <div class="panel-title">Associate Product Manager <span class="now-badge">Current</span></div>
           <div class="panel-meta">
             <span class="panel-co"><span class="panel-co-dot"></span>Sprinklr · Gurugram</span>
             <span class="panel-period">June 2025 – Present</span>
@@ -745,9 +765,19 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Panel 1 -->
-      <div class="tab-panel" id="tab-1">
+    <!-- ── Group 2 ── -->
+    <div class="tab-group">
+      <button class="tab-btn" onclick="switchTab(this)">
+        <div class="tab-btn-info">
+          <span class="tab-role">Senior Product Analyst</span>
+          <div class="tab-co"><span class="tab-co-dot"></span>Sprinklr · Gurugram</div>
+          <span class="tab-period">Mar 2024 – June 2025</span>
+        </div>
+        <svg class="tab-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="tab-panel">
         <div class="panel-header">
           <div class="panel-title">Senior Product Analyst</div>
           <div class="panel-meta">
@@ -773,9 +803,19 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Panel 2 -->
-      <div class="tab-panel" id="tab-2">
+    <!-- ── Group 3 ── -->
+    <div class="tab-group">
+      <button class="tab-btn" onclick="switchTab(this)">
+        <div class="tab-btn-info">
+          <span class="tab-role">Product Analyst</span>
+          <div class="tab-co"><span class="tab-co-dot"></span>Sprinklr · Gurugram</div>
+          <span class="tab-period">Feb 2022 – Mar 2024</span>
+        </div>
+        <svg class="tab-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="tab-panel">
         <div class="panel-header">
           <div class="panel-title">Product Analyst</div>
           <div class="panel-meta">
@@ -793,8 +833,8 @@
           </div>
         </div>
       </div>
-
     </div>
+
   </div>
 </div>
 
@@ -1063,14 +1103,20 @@ document.querySelectorAll('.stat-card').forEach((el, i) => {
   el.style.transitionDelay = `${i * 0.1}s`;
 });
 
-// ── Tab switching ─────────────────────────────────
-function switchTab(index, btn) {
-  // Deactivate all buttons and panels
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  // Activate selected
-  btn.classList.add('active');
-  document.getElementById('tab-' + index).classList.add('active');
+// ── Tab / Accordion switching ─────────────────────
+function switchTab(btn) {
+  const group    = btn.closest('.tab-group');
+  const isMobile = window.innerWidth <= 860;
+  const isActive = group.classList.contains('active');
+
+  // Always collapse all groups first
+  document.querySelectorAll('.tab-group').forEach(g => g.classList.remove('active'));
+
+  // On desktop: always open the clicked one
+  // On mobile:  toggle — if it was already open, clicking again closes it
+  if (!isMobile || !isActive) {
+    group.classList.add('active');
+  }
 }
 
 // ── Click burst sparks ────────────────────────────
